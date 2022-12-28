@@ -17,6 +17,23 @@ body {
     left: 15px;
     width: 170px;
 }
+
+.fav_img {
+    display: none
+}
+@media (max-width: 800px){
+    .fav_img {
+        display: unset;
+        position: absolute;
+        top: 15px;
+        left: 30px;
+        width: 60px;
+    }
+
+    .logo_img {
+        display: none
+    }
+}
 .dg {
     color: var(--contrasting-color);
     text-shadow: none;
