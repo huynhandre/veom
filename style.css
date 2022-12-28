@@ -29,7 +29,7 @@ body {
 
 .dg.main .close-button {
     border-radius: 0 0 var(--border-radius) var(--border-radius);
-    height: 50px;
+    height: 27px;
     display: grid;
     align-items: center;
     background-color: var(--primary-color);
