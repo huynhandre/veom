@@ -21,7 +21,7 @@ body {
 .fav_img {
     display: none
 }
-@media (max-width: 800px){
+@media (max-width: 1200px){
     .fav_img {
         display: unset;
         position: absolute;
