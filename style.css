@@ -1,8 +1,10 @@
 :root {
     --border-radius: 10px;
-    --primary-color: rgb(171, 171, 171);
-    --secondary-color: rgb(219, 219, 219);
+    --inner-border-radius: calc(var(--border-radius) / 2);
+    --primary-color: rgb(238, 238, 238);
+    --secondary-color: rgb(255, 255, 255);
     --contrasting-color: rgb(21, 21, 21);
+    --box-shadow: rgb(175, 175, 175);
 }
 
 body {
@@ -21,41 +23,47 @@ body {
 .fav_img {
     display: none
 }
-@media (max-width: 1200px){
+@media (max-width: 850px){
     .fav_img {
         display: unset;
         position: absolute;
         top: 15px;
-        left: 30px;
-        width: 60px;
+        left: 25px;
+        width: 45px;
     }
 
     .logo_img {
         display: none
     }
 }
+
+/* change dat.GUI */
 .dg {
-    color: var(--contrasting-color);
-    text-shadow: none;
+    color: var(--contrasting-color) !important;
+    text-shadow: none !important;
 }
 .dg.main {
     position: fixed;
-    right: 10px;
-    top: 60px;
+    right: 15px;
+    top: 30px;
 }
 
-.dg.main .close-button {
-    border-radius: 0 0 var(--border-radius) var(--border-radius);
+.dg .main .close-button {
+    position: relative;
+    z-index: -1;
+    border-radius: 0 0 var(--border-radius) var(--border-radius) !important;
     height: 27px;
     display: grid;
     align-items: center;
-    background-color: var(--primary-color);
+    background-color: var(--primary-color) !important;
+    box-shadow: -2px 10px 20px 3px var(--box-shadow);
+    left:-1px
 }
 
 .dg li.title {
     border-radius: 0 0 0 0;
     background: var(--primary-color)
-     url(data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlI+hKgFxoCgAOw==) 6px 10px no-repeat;;
+     url(data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlI+hKgFxoCgAOw==) 6px 10px no-repeat !important;
 }
 
 .dg li:nth-of-type(1) .title {
@@ -63,5 +71,32 @@ body {
 }
 
 .dg li.cr {
-    background-color: var(--secondary-color);
+    background-color: var(--secondary-color) !important;
+    border-right: 1px solid var(--primary-color) !important;
+    border-bottom: 1px solid var(--primary-color) !important; 
+}
+
+.dg .closed li:not(.title) {
+    border: none !important;
+}
+
+.dg .slider-fg {
+    border-radius: var(--inner-border-radius)
+}
+.dg .slider {
+    border-radius: var(--inner-border-radius);
+    border: 1px  var(--contrasting-color);opacity:0.6;
+}
+
+.dg .c input {
+    border-radius: var(--inner-border-radius);
+    background: var(--secondary-color)
+}
+
+.dg .a {
+    border-radius: var(--border-radius)  var(--border-radius) 0 0 ;
+    box-shadow: -2px 10px 20px 3px var(--box-shadow);
+}
+div.close-button .close-bottom {
+    width: 22px !important;
 }
