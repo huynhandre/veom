@@ -1,10 +1,10 @@
 :root {
     --border-radius: 10px;
     --inner-border-radius: calc(var(--border-radius) / 2);
-    --primary-color: rgb(238, 238, 238);
+    --primary-color: rgb(240, 240, 240);
     --secondary-color: rgb(255, 255, 255);
-    --contrasting-color: rgb(21, 21, 21);
-    --box-shadow: rgb(175, 175, 175);
+    --contrasting-color: rgb(12, 39, 47);
+    --box-shadow: rgb(204, 204, 204);
 }
 
 body {
@@ -56,18 +56,27 @@ body {
     display: grid;
     align-items: center;
     background-color: var(--primary-color) !important;
-    box-shadow: -2px 10px 20px 3px var(--box-shadow);
-    left:-1px
+    box-shadow:
+     -2px 10px 20px 3px var(--box-shadow),
+     5px 0px 3px -2px rgb(250, 250, 250) inset,
+     -4px -5px 3px -3px rgb(193, 193, 193) inset;
+    left:0px
 }
 
 .dg li.title {
     border-radius: 0 0 0 0;
     background: var(--primary-color)
      url(data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlI+hKgFxoCgAOw==) 6px 10px no-repeat !important;
-}
+    box-shadow:
+     5px 0px 3px -2px rgb(250, 250, 250) inset,
+     -5px 0px 3px -3px rgb(193, 193, 193) inset;
+}   
 
 .dg li:nth-of-type(1) .title {
     border-radius: var(--border-radius) var(--border-radius) 0 0;
+    box-shadow:
+     5px 4px 3px -2px rgb(250, 250, 250) inset,
+     -4px 0px 3px -3px rgb(193, 193, 193) inset;
 }
 
 .dg li.cr {
