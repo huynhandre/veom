@@ -1,0 +1,50 @@
+:root {
+    --border-radius: 10px;
+    --primary-color: rgb(171, 171, 171);
+    --secondary-color: rgb(219, 219, 219);
+    --contrasting-color: rgb(21, 21, 21);
+}
+
+body {
+    margin-top: 0;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.logo_img {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    width: 170px;
+}
+.dg {
+    color: var(--contrasting-color);
+    text-shadow: none;
+}
+.dg.main {
+    position: fixed;
+    right: 10px;
+    top: 60px;
+}
+
+.dg.main .close-button {
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+    height: 50px;
+    display: grid;
+    align-items: center;
+    background-color: var(--primary-color);
+}
+
+.dg li.title {
+    border-radius: 0 0 0 0;
+    background: var(--primary-color)
+     url(data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlI+hKgFxoCgAOw==) 6px 10px no-repeat;;
+}
+
+.dg li:nth-of-type(1) .title {
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+}
+
+.dg li.cr {
+    background-color: var(--secondary-color);
+}
