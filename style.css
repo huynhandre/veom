@@ -1,10 +1,10 @@
 :root {
     --border-radius: 12px;
     --inner-border-radius: calc(var(--border-radius) / 2);
-    --primary-color: rgb(242, 242, 242);
+    --primary-color: rgb(246, 246, 246);
     --secondary-color: rgb(255, 255, 255);
     --contrasting-color: rgb(72, 72, 72);
-    --box-shadow: rgb(139, 139, 139, 0.15)
+    --box-shadow: rgb(139, 139, 139, 0.12)
 }
 
 body {
@@ -15,8 +15,9 @@ body {
 
 .logo_img {
     position: absolute;
-    top: 15px;
-    left: 15px;
+    z-index: 0;
+    top: 7px;
+    left: 7px;
     width: 160px;
 }
 
@@ -57,9 +58,9 @@ body {
     align-items: center;
     background-color: var(--primary-color) !important;
     box-shadow:
-     -2px 10px 15px 3px var(--box-shadow),
-     5px 0px 1.5px -2px rgb(250, 250, 250) inset,
-     -5px -5px 1.5px -3px rgb(214, 214, 214) inset;
+     -2px 5px 13px 1px var(--box-shadow);
+    /* 5px 0px 1.5px -2px rgb(250, 250, 250) inset,
+     -5px -5px 1.5px -3px rgb(214, 214, 214) inset;*/
     left:0px;
 }
 
@@ -67,17 +68,17 @@ body {
     border-radius: 0 0 0 0;
     background: var(--primary-color)
      url(data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlI+hKgFxoCgAOw==) 6px 10px no-repeat !important;
-    box-shadow:
+    /*box-shadow:
      5px 0px 1.5px -2px rgb(250, 250, 250) inset,
-     -5px 0px 1.5px -3px rgb(214, 214, 214) inset;
+     -5px 0px 1.5px -3px rgb(214, 214, 214) inset;*/
     border-bottom: 1px solid var(--box-shadow) !important;
 }   
 
 .dg li:nth-of-type(1) .title {
     border-radius: var(--border-radius) var(--border-radius) 0 0;
-    box-shadow:
+    /*box-shadow:
      5px 4px 1px -2px rgb(250, 250, 250) inset,
-     -5px 0px 1px -3px rgb(214, 214, 214) inset;
+     -5px 0px 1px -3px rgb(214, 214, 214) inset;*/
     border-bottom: 1px solid var(--box-shadow);
 }
 
@@ -110,7 +111,7 @@ body {
 
 .dg .a {
     border-radius: var(--border-radius)  var(--border-radius) 0 0 ;
-    box-shadow: -2px 10px 15px 3px var(--box-shadow);
+    box-shadow: -2px 5px 13px 1px var(--box-shadow);
 }
 div.close-button .close-bottom {
     width: 22px !important;
