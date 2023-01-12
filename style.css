@@ -13,6 +13,26 @@ body {
     margin-right: 0;
 }
 
+
+.py-terminal {
+    font-family: 'Verdana';
+    font-size: 10px;
+    font-weight: lighter;
+    min-height: 1em;
+    background-color: rgb(85, 141, 147);
+    color: white;
+    padding: 0.5rem;
+
+    position: absolute;
+    top: 60px;
+    left: 10px;
+    display: block;
+}
+
+.py-terminal-hidden {
+    display: none;
+}
+
 .logo_img {
     position: absolute;
     z-index: 0;
@@ -93,7 +113,7 @@ body {
 }
 
 .dg .slider-fg {
-    border-radius: var(--inner-border-radius)
+    border-radius: var(--inner-border-radius);
 }
 .dg .slider {
     border-radius: var(--inner-border-radius);
