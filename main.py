@@ -1,4 +1,4 @@
- # Import javascript modules
+  # Import javascript modules
 from js import THREE, window, document, Object, console
 # Import pyscript / pyodide modules
 from pyodide.ffi import create_proxy, to_js
@@ -45,77 +45,100 @@ def main():
 
     #---------------------------------------------------------------------------------------------------------------------------------------------------------------
     # YOUR DESIGN / GEOMETRY GENERATION
+    global mousemove, dragging
 
+    # Gumball Visibility
+    mousemove = create_proxy(mouseMove)
+    window.addEventListener('keyup', mousemove )
+
+
+    dragging = create_proxy(Dragging)
+    window.addEventListener('keypress', dragging)
+    
+
+    
     # CREATE ATTRACTORS
     # meshes, material
-    global sphere1, sphere2
-    material_attractor_red = THREE.MeshBasicMaterial.new()
-    material_attractor_red.color = THREE.Color.new(255, 0, 0)
 
-    material_attractor_yellow = THREE.MeshBasicMaterial.new()
-    material_attractor_yellow.color = THREE.Color.new(255, 255, 0)
+    global attractors
+
+    def attractors():
+        global sphere1, sphere2, tf_controls, tf_controls_2, control_params
+        material_attractor_red = THREE.MeshBasicMaterial.new()
+        material_attractor_red.color = THREE.Color.new(255, 0, 0)
+
+        material_attractor_yellow = THREE.MeshBasicMaterial.new()
+        material_attractor_yellow.color = THREE.Color.new(255, 255, 0)
 
 
-    sphere_geom1 = THREE.SphereGeometry.new(0.15,20,10)
-    sphere_geom2 = THREE.SphereGeometry.new(0.15,20,10)
+        sphere_geom1 = THREE.SphereGeometry.new(0.15,20,10)
+        sphere_geom2 = THREE.SphereGeometry.new(0.15,20,10)
+        
+        sphere1 = THREE.Mesh.new(sphere_geom1, material_attractor_red)
+        scene.add(sphere1)
     
-    sphere1 = THREE.Mesh.new(sphere_geom1, material_attractor_red)
-    scene.add(sphere1)
+        
+        sphere2 = THREE.Mesh.new(sphere_geom2, material_attractor_yellow)
+        scene.add(sphere2)
 
+        # Mouse Events for TransformControls
+        mouse_down = create_proxy(deactivate_o_controls)
+        mouse_up = create_proxy(activate_o_controls)
+ 
+
+
+        # add TransformControls
+        gumball_size = 0.6
+        controls.enabled = True
+        
+        tf_controls = THREE.TransformControls.new(camera, renderer.domElement)
+        tf_controls.size = gumball_size
+        tf_controls.addEventListener('mouseDown', mouse_down )
+        tf_controls.addEventListener('mouseUp', mouse_up )
+            
+
+        sphere1.translateX(-2.5)
+        sphere1.translateY(1)
+        
     
+        tf_controls_2 = THREE.TransformControls.new(camera, renderer.domElement)
+        tf_controls_2.size = gumball_size
+        tf_controls_2.addEventListener('mouseDown', mouse_down )
+        tf_controls_2.addEventListener('mouseUp', mouse_up )
+  
+        sphere2.translateX(2)
+        sphere2.translateY(-0.5)
+        scene.add(tf_controls_2)
+        
+     
+        
+        # origin for orientation
+        point = THREE.BufferGeometry.new()
+        vertices = []
+        x = 0
+        y = 0
+        z = 0
+        vertices.append(x)
+        vertices.append(y)
+        vertices.append(z)
+        point.setAttribute('position',THREE.Float32BufferAttribute.new( vertices, 3 ))
+        pointmaterial = THREE.PointsMaterial.new()
+        pointmaterial.color = THREE.Color.new(355,0,0)
+        pointmaterial.size = 0.2
+        origin = THREE.Points.new(point, pointmaterial)
+        scene.add(origin)
+        
+     
 
-    sphere2 = THREE.Mesh.new(sphere_geom2, material_attractor_yellow)
-    scene.add(sphere2)
 
-    # Mouse Events for TransformControls
-    mouse_down = create_proxy(deactivate_o_controls)
-    mouse_up = create_proxy(activate_o_controls)
-
-    # add TransformControls
-    gumball_size = 0.6
-    controls.enabled = True
-    tf_controls = THREE.TransformControls.new(camera, renderer.domElement)
-    tf_controls.size = gumball_size
-    tf_controls.addEventListener('mouseDown', mouse_down )
-    tf_controls.addEventListener('mouseUp', mouse_up )
-    tf_controls.attach(sphere1)
-
-    sphere1.translateX(-2.5)
-    sphere1.translateY(1)
-    scene.add(tf_controls)
-
-    tf_controls_2 = THREE.TransformControls.new(camera, renderer.domElement)
-    tf_controls_2.size = gumball_size
-    tf_controls_2.addEventListener('mouseDown', mouse_down )
-    tf_controls_2.addEventListener('mouseUp', mouse_up )
-    tf_controls_2.attach(sphere2)
-
-    sphere2.translateX(2)
-    sphere2.translateY(-0.5)
-    scene.add(tf_controls_2)
-    
-    # origin for orientation
-    point = THREE.BufferGeometry.new()
-    vertices = []
-    x = 0
-    y = 0
-    z = 0
-    vertices.append(x)
-    vertices.append(y)
-    vertices.append(z)
-    point.setAttribute('position',THREE.Float32BufferAttribute.new( vertices, 3 ))
-    pointmaterial = THREE.PointsMaterial.new()
-    pointmaterial.color = THREE.Color.new(355,0,0)
-    pointmaterial.size = 0.2
-    origin = THREE.Points.new(point, pointmaterial)
-    scene.add(origin)
-    
+    attractors()
+   
     # define the grid params
     global grid_params, grid_count, grid_scale_x, grid_scale_y, grid_scale_z, wireframe_base, voxel_centers, hide_voxels
-    grid_count = 10
-    grid_scale_x = 5
-    grid_scale_y = 5
-    grid_scale_z = 5
+    grid_count = 3
+    grid_scale_x = 1
+    grid_scale_y = 1
+    grid_scale_z = 1
     wireframe_base = False
     voxel_centers = False
     hide_voxels = False
@@ -139,15 +162,20 @@ def main():
     attractor_2_strength= 2.6
     
     lock_points = False
+    set_points = False
+   
 
     attractor_params = {
             "limit": attractor_limit,
             "red_strength": attractor_1_strength,
             "yellow_strength": attractor_2_strength,
-            "lock_points": lock_points
+            "lock_points": lock_points,
+            "set_points": set_points,
+            
     }
 
     attractor_params = Object.fromEntries(to_js(attractor_params))
+
 
     # create a THREE.js voxel  material
     global material, material_center, line_material
@@ -179,7 +207,7 @@ def main():
     # set up GUI
     gui = window.dat.GUI.new()
     param_folder = gui.addFolder('Grid Parameters')
-    param_folder.add(grid_params, 'density', 2,20,1)
+    param_folder.add(grid_params, 'density', 1,10,1)
     param_folder.add(grid_params, 'grid_scale_x', 1,10,1)
     param_folder.add(grid_params, 'grid_scale_y', 1,10,1)
     param_folder.add(grid_params, 'grid_scale_z', 1,10,1)
@@ -193,7 +221,9 @@ def main():
     param_folder.add(attractor_params, 'red_strength', 1, 5, 0.1)
     param_folder.add(attractor_params, 'yellow_strength', 1, 5, 0.1)
     param_folder.add(attractor_params, 'lock_points')
+    param_folder.add(attractor_params, 'set_points')
     param_folder.open()
+    
 
     #IMPLEMENT
     global firstupdate
@@ -216,14 +246,14 @@ def generate_voxel():
     generate_boundary()
 
     #create voxels
-    geometry = THREE.BoxGeometry.new(grid_scale_x / grid_count, grid_scale_y / grid_count, grid_scale_z / grid_count) #calculate voxel sizes
+    geometry = THREE.BoxGeometry.new( 1, 1 , 1 ) #calculate voxel sizes
 
     geometry_center_scaler = (((grid_scale_x + grid_scale_y + grid_scale_z) / 3) / grid_count) * 0.1 # calculate the average grid scale and adjust point size accordingly
     geometry_center = THREE.SphereGeometry.new(geometry_center_scaler, 10, 10) 
     
-    for i in range(grid_count):
-        for j in range(grid_count):
-            for k in range(grid_count):
+    for i in range(grid_count + grid_scale_x):
+        for j in range(grid_count + grid_scale_y):
+            for k in range(grid_count + grid_scale_z):
 
                 voxel = THREE.Mesh.new(geometry, material)
                 sphere = THREE.Mesh.new(geometry_center, material_center)
@@ -233,9 +263,9 @@ def generate_voxel():
                     
                 # position Voxels and center spheres
                 # position - 1/2 of grid size + 1/2 of voxel size 
-                pos_x = ((i / grid_count) * grid_scale_x) - (grid_scale_x / 2) + (grid_scale_x/grid_count/2)
-                pos_y = ((j / grid_count) * grid_scale_y) - (grid_scale_y / 2) + (grid_scale_y/grid_count/2)
-                pos_z = ((k / grid_count) * grid_scale_z) - (grid_scale_z / 2) + (grid_scale_z/grid_count/2)
+                pos_x = i-((grid_count + grid_scale_x-1)/2)
+                pos_y = j-((grid_count + grid_scale_y-1)/2)
+                pos_z = k-((grid_count + grid_scale_z-1)/2)
                 
                 voxel.position.set(pos_x, pos_y, pos_z)
                 sphere.position.set(pos_x, pos_y, pos_z)
@@ -255,6 +285,9 @@ def generate_voxel():
                         scene.add(voxel) 
                 if voxel_centers == True:
                     scene.add(sphere)
+
+
+                
 
 # store parameters, reset lists              
 def store_parameters():
@@ -281,7 +314,7 @@ def generate_boundary():
     for boundary_edge in boundary:
         scene.remove(boundary_edge)
 
-    geometry_boundary = THREE.BoxGeometry.new(grid_scale_x, grid_scale_y, grid_scale_z)
+    geometry_boundary = THREE.BoxGeometry.new(grid_count + grid_scale_x, grid_count + grid_scale_y, grid_count + grid_scale_z)
     boundary = THREE.Mesh.new(geometry_boundary, material)
     geometry_edge = THREE.EdgesGeometry.new(boundary.geometry)
     boundary_edge = THREE.LineSegments.new(geometry_edge, line_material)
@@ -299,6 +332,7 @@ def getcenter(sphere):
     sphere.localToWorld(center)
 
     return center
+
 
 # calculate values in relation to distance
 def individual_values(attractor, attractor_strength):
@@ -319,10 +353,13 @@ def individual_values(attractor, attractor_strength):
     return values
 
 def final_values():
-    global voxel_values, voxel_list, sphere_list, wireframe_list
-    #get current attractor positon
+    global voxel_values, voxel_list, sphere_list, wireframe_list, attractor1, attractor2
+    #get current attractor positons
     attractor1 = getcenter(sphere1)
     attractor2 = getcenter(sphere2)
+    
+    
+
 
     #calculate values for every attractor and store in list
     attractor1_values = []
@@ -352,6 +389,9 @@ def final_values():
         else: 
             pass  
 
+
+
+
 def rebuild_voxel():
     if voxel_centers == True:
         for sphere in sphere_list:
@@ -373,9 +413,12 @@ def rebuild_voxel():
 
 # position acctractors relative to grid
 def position_attractors():
+    global attractor_params, lock_points
     if attractor_params.lock_points == False:
-        global sphere1, sphere2, grid_scale_x, grid_params
+        global sphere1, sphere2, grid_scale_x, grid_params, grid_count
+        
 
+        
         attractor_1_pos = THREE.Vector3.new()
         sphere1.getWorldPosition(attractor_1_pos)
 
@@ -391,7 +434,10 @@ def position_attractors():
         relative_pos_x_2 = attractor_2_pos.x / (grid_scale_x)
         relative_pos_y_2 = attractor_2_pos.y / (grid_scale_y)
         relative_pos_z_2 = attractor_2_pos.z / (grid_scale_z)
-
+        
+   
+        
+        """
         # move the attractors when scaling
         if grid_scale_x != grid_params.grid_scale_x:
 
@@ -407,11 +453,42 @@ def position_attractors():
 
             sphere1.translateZ((relative_pos_z_1 * grid_params.grid_scale_z) - attractor_1_pos.z)
             sphere2.translateZ((relative_pos_z_2 * grid_params.grid_scale_z) - attractor_2_pos.z)
+        
+      """
 
+  
+   
+#hide the gumball, when mouse moves around and no key is pressed
+def mouseMove(event):
+    tf_controls.detach(sphere1)
+    tf_controls_2.detach(sphere2)
+
+
+# show the gumball while dragging
+def Dragging(event):
+   
+    tf_controls.attach(sphere1)
+    scene.add(tf_controls)
+    
+    tf_controls_2.attach(sphere2)
+    scene.add(tf_controls_2)
+    
+
+
+
+
+info = print("To move the spheres around, press and hold a key.")
+
+
+    
+    
+  
+    
+    
 
 # Update
 def update():
-    global attractor_limit, attractor_1_strength, attractor_2_strength, firstupdate
+    global attractor_limit, attractor_1_strength, attractor_2_strength, firstupdate, gumball
     #if grid changes
     if grid_count != grid_params.density or wireframe_base != grid_params.wireframe or grid_params.voxel_centers != voxel_centers or hide_voxels != grid_params.hide_voxels:
         generate_voxel()
@@ -433,20 +510,27 @@ def update():
             firstupdate +=1
             generate_voxel()
             final_values() 
-    else:
-        pass
+    
+
+
+
 
 # OrbitControls Toggle while TransformControls(On/Off)
 def deactivate_o_controls(event):
     global controls
     controls.enabled = False
 
+
 def activate_o_controls(event):
     global controls
     controls.enabled = True
+    
     rebuild_voxel()
     final_values()
 
+    
+
+    
 # Simple render and animate
 def render(*args):
     window.requestAnimationFrame(create_proxy(render))
