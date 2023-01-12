@@ -1,5 +1,5 @@
 :root {
-    --border-radius: 12px;
+    --border-radius: 10px;
     --inner-border-radius: calc(var(--border-radius) / 2);
     --primary-color: rgb(246, 246, 246);
     --secondary-color: rgb(255, 255, 255);
@@ -27,6 +27,7 @@ body {
     top: 60px;
     left: 10px;
     display: block;
+    border-radius: var(--inner-border-radius);
 }
 
 .py-terminal-hidden {
