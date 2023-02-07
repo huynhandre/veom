@@ -20,7 +20,7 @@ body {
 
 canvas {
     position: absolute;
-    z-index: -1;
+    z-index: 0;
     top: 0;
 }
 
@@ -42,7 +42,7 @@ canvas {
     font-weight: lighter;
 
     padding:8px 16px;
-
+    z-index: 1;
 
     outline:0;
     height: auto;
@@ -74,6 +74,7 @@ canvas {
     position: relative;
     float:left;
 
+    z-index: 1;
     width: 160px;
     top:0;
     padding:0px 16px;
@@ -166,6 +167,7 @@ canvas {
 
 .footer {
     position: fixed;
+    z-index: 1;
     bottom: 0px;
     right: 27px;
 
@@ -298,6 +300,10 @@ div.close-button .close-bottom {
 
 /*---
 REDO-BUTTON----------------------------------------------*/
+button{
+    z-index: 1;
+}
+
 .button3 {
     height: 30px;
     width: 70px;
@@ -438,31 +444,45 @@ REDO-BUTTON----------------------------------------------*/
 /*---Infobox------------------------------------------------*/
 .info {
     font-family: 'Verdana';
-    font-size: 10px;
-    font-weight: lighter;
-    min-height: 1em;
-    background-color: var(--prime-hover);
+    font-size: 30px;
+    height: 45px;
+    width: 45px;
+    background-color: none;
     color: var(--contrasting-color);
-    padding: 0.2rem 0.6rem 0.2rem 0.8rem;
-    border-radius: var(--border-radius);
+    border-radius: 30px;
+    text-align: center;
 
     position: absolute;
     top: 70px;
     left: 25px;
     display: block;
 
-    max-width: 220px;
-    -webkit-animation: cssAnimation 20s forwards; 
-    animation: cssAnimation 20s forwards;
+    max-width: 500px  !important;
+    z-index: 1;
+    -moz-transition: all 0.2s ease;
+    -webkit-transition: all 0.2 ease !important;
+    transition: all 0.2s ease !important;
 }
 
-@keyframes cssAnimation {
-    0%   {opacity: 1;}
-    95%  {opacity: 1;}
-    100% {opacity: 0; visibility: none !important;}
+.extra-info {
+    display: none;
+    font-family: 'Verdana';
+    font-size: 12px;
+    font-weight: lighter;
+    background-color: var(--prime-hover);
+    color: var(--contrasting-color);
+    padding: 0.2rem 0.4rem 0.2rem 0.8rem;
+    border-radius: var(--border-radius);
+
+    text-align: left;
+    position: absolute;
 }
-@-webkit-keyframes cssAnimation {
-    0%   {opacity: 1;}
-    95%  {opacity: 1;}
-    100% {opacity: 0; visibility: none !important;}
+
+.info:hover .extra-info{
+    display: block;
+    width: 400px;
+}
+
+.info:hover {
+    background-color: var(--prime-hover);
 }
