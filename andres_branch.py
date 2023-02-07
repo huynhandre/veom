@@ -91,7 +91,7 @@ def main():
     # meshes, material
     global material, material_center, line_material
 
-    # create  voxel  material
+    # create main material
     material = THREE.MeshBasicMaterial.new()
     material.color = primary_color
     material.transparent = True
@@ -171,9 +171,9 @@ def main():
     }
     attractor_params = Object.fromEntries(to_js(attractor_params))
 
-    filling_options = ["Type 1", "Type 2", "Type 3"]
+    filling_options = ["No Infill", "Type 1", "Type 2", "Type 3"]
 
-    global gui, param1, param2, param3, param4, param5, param6, param7
+    global gui, param_folder, param1, param2, param3, param4, param5, param6
     gui = window.dat.GUI.new()
     param_folder = gui.addFolder('Bounding Parameters')
     param1 = param_folder.add(grid_params, 'grid_scale_x', 1,25,1).name("Scale X")
@@ -185,7 +185,7 @@ def main():
     param_folder = gui.addFolder('Attractor')
     param6 = param_folder.add(attractor_params, 'limit', 0, 1)
     param_folder.open()
-    param_folder =gui.add(attractor_params, 'Geometry', to_js(filling_options))
+    param_folder = gui.add(attractor_params, 'Geometry', to_js(filling_options))
 
     # html buttonsklk
     button_proxy1 = create_proxy(export)
@@ -214,66 +214,113 @@ def main():
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 # VOXEL GRID
 # create a voxel at each node of the grid
-def generate_voxel():
+def generate_grid():
+    global voxel_positions, grid_scale_x, grid_scale_y, grid_scale_z
+    voxel_positions = []
+   
+    generate_boundary()
+
+    for i in range(grid_scale_x):
+        for j in range(grid_scale_y):
+            for k in range(grid_scale_z):
+   
+                # position Voxels and center spheres
+                # position - 1/2 of grid size + 1/2 of voxel size a
+                pos_x = i - 0.5*grid_scale_x + 0.5
+                pos_y = j - 0.5*grid_scale_y + 0.5
+                pos_z = k - 0.5*grid_scale_z + 0.5
+                
+                position = THREE.Vector3.new(pos_x, pos_y, pos_z)
+                voxel_positions.append(position)
+
+def generate_voxels():
+    global voxel_list, wireframe_list
+    global grid_params, wireframe_base, hide_voxels
     # remove all voxels
     for wireframe in wireframe_list:
         scene.remove(wireframe)
     for voxel in voxel_list:
         scene.remove(voxel)
-    
-    store_parameters()
-    generate_boundary()
-
-
-    # create voxels
-    geometry = THREE.BoxGeometry.new( 1, 1 , 1 ) #calculate voxel sizes
-    
-    for i in range(grid_scale_x):
-        for j in range(grid_scale_y):
-            for k in range(grid_scale_z):
-
-                voxel = THREE.Mesh.new(geometry, material)
-        
-                geometry_wireframe = THREE.EdgesGeometry.new(voxel.geometry)
-                wireframe = THREE.LineSegments.new(geometry_wireframe, line_material)
-                    
-                # position Voxels and center spheres
-                # position - 1/2 of grid size + 1/2 of voxel size 
-                pos_x = i - 0.5*grid_scale_x + 0.5
-                pos_y = j - 0.5*grid_scale_y + 0.5
-                pos_z = k - 0.5*grid_scale_z + 0.5
-                
-                voxel.position.set(pos_x, pos_y, pos_z)
-                wireframe.position.set(pos_x, pos_y, pos_z)
-
-                voxel_list.append(voxel)
-                wireframe_list.append(wireframe)
-                
-                position = THREE.Vector3.new(pos_x, pos_y, pos_z)
-                voxel_positions.append(position)
-
-                if hide_voxels == False:
-                    if wireframe_base == True:
-                        scene.add(wireframe)
-                    else:
-                        scene.add(voxel) 
-
-# store parameters, reset lists              
-def store_parameters():
-    global voxel_list, wireframe_list, voxel_positions
-    global grid_params, grid_scale_x, grid_scale_y, grid_scale_z, wireframe_base, hide_voxels
 
     wireframe_list = []
     voxel_list = []
     
-    voxel_positions = []
-
-    grid_scale_x = grid_params.grid_scale_x
-    grid_scale_y = grid_params.grid_scale_y
-    grid_scale_z = grid_params.grid_scale_z
-    wireframe_base = grid_params.wireframe
     hide_voxels = grid_params.hide_voxels
+
+    # create voxels
+    geometry = THREE.BoxGeometry.new( 1, 1 , 1 ) #calculate voxel sizes
+    voxel_opacity = 0.3
+    for pos, val in zip(infill_positions, infill_type):
+
+         # different colors
+        if val == 1:
+            voxel_material1 = THREE.MeshBasicMaterial.new()
+            voxel_material1.transparent = True
+            voxel_material1.opacity = voxel_opacity
+            voxel_material1.color = THREE.Color.new("rgb(56, 154, 216)")
+
+            voxel = THREE.Mesh.new(geometry, voxel_material1)
+        
+            geometry_wireframe = THREE.EdgesGeometry.new(voxel.geometry)
+            wireframe = THREE.LineSegments.new(geometry_wireframe, line_material)
+
+            voxel.position.set(pos.x, pos.y, pos.z)
+            voxel_list.append(voxel)
+            wireframe.position.set(pos.x, pos.y, pos.z)
+            wireframe_list.append(wireframe)
     
+            if hide_voxels == False:
+                if wireframe_base == True:
+                    scene.add(wireframe)
+                else:
+                    scene.add(voxel) 
+
+        elif val == 2:
+            voxel_material2 = THREE.MeshBasicMaterial.new()
+            voxel_material2.transparent = True
+            voxel_material2.opacity = voxel_opacity
+            voxel_material2.color = THREE.Color.new("rgb(62, 209, 206)")
+
+            voxel = THREE.Mesh.new(geometry, voxel_material2)
+        
+            geometry_wireframe = THREE.EdgesGeometry.new(voxel.geometry)
+            wireframe = THREE.LineSegments.new(geometry_wireframe, line_material)
+
+            voxel.position.set(pos.x, pos.y, pos.z)
+            voxel_list.append(voxel)
+            wireframe.position.set(pos.x, pos.y, pos.z)
+            wireframe_list.append(wireframe)
+    
+            if hide_voxels == False:
+                if wireframe_base == True:
+                    scene.add(wireframe)
+                else:
+                    scene.add(voxel) 
+
+        elif val == 3:
+            voxel_material3 = THREE.MeshBasicMaterial.new()
+            voxel_material3.transparent = True
+            voxel_material3.opacity = voxel_opacity
+            voxel_material3.color = THREE.Color.new("rgb(89, 230, 145)")
+
+            voxel = THREE.Mesh.new(geometry, voxel_material3)
+        
+            geometry_wireframe = THREE.EdgesGeometry.new(voxel.geometry)
+            wireframe = THREE.LineSegments.new(geometry_wireframe, line_material)
+
+            voxel.position.set(pos.x, pos.y, pos.z)
+            voxel_list.append(voxel)
+            wireframe.position.set(pos.x, pos.y, pos.z)
+            wireframe_list.append(wireframe)
+    
+            if hide_voxels == False:
+                if wireframe_base == True:
+                    scene.add(wireframe)
+                else:
+                    scene.add(voxel) 
+
+
+
 # create boundary
 def generate_boundary():
     global boundary
@@ -298,7 +345,29 @@ def getcenter(sphere):
     geometry.boundingBox.getCenter(center)
     sphere.localToWorld(center)
     return center
-    
+
+# filter nearest voxels
+def filter_positions():
+    attractor = getcenter(sphere)
+    global prio_voxel_positions, voxel_positions, second_voxel_positions
+    prio_voxel_positions = []
+    second_voxel_positions = []
+    limit = ((len(voxel_positions) - len(voxel_positions)*(attractor_params.limit))**(1./3.))*0.5
+    higher_f_limit = limit
+    lower_f_limit = -limit
+
+    for position in voxel_positions:
+        filteredX = position.x-attractor_positions.x
+        filteredY = position.y-attractor_positions.y
+        filteredZ = position.z-attractor_positions.z
+
+        if all(lower_f_limit < x < higher_f_limit for x in (filteredX, filteredY, filteredZ)):
+            prio_voxel_positions.append(position)
+        else:
+            second_voxel_positions.append(position)
+    console.log(prio_voxel_positions)
+    console.log(second_voxel_positions)
+
 # calculate values in relation to distance
 def individual_value(attractor, attractor_strength):
     global voxel_positions
@@ -320,7 +389,7 @@ def individual_value(attractor, attractor_strength):
 
 # calculate final value for every voxel
 def final_values():
-    global voxel_values, voxel_list, wireframe_list, voxel_positions, attractors, attractor_positions, attractor_strengths
+    global voxel_values, voxel_positions, attractors, attractor_positions, attractor_strengths
     all_values = []
     voxel_values = [] 
     attractor_positions = []
@@ -351,20 +420,14 @@ def final_values():
     index = -1
     for value in voxel_values:
         index += 1
-        if value < voxel_values_2[round(limit)]:
-            if hide_voxels == False:
-                if wireframe_base == True:
-                    scene.remove(wireframe_list[index])
-                else:
-                    scene.remove(voxel_list[index])
-        else: 
+        if value > voxel_values_2[round(limit)]:
             remaining_voxel_values.append(value)
             infill_positions.append(voxel_positions[index])
-            pass  
-    
+            
     # infill types and positions: 1 = low density; 2 = medium density; 3 = high density
     infill_type = remap_values(remaining_voxel_values)
     infill_positions
+    generate_voxels()
 
 # remaps all values above the limit
 def remap_values(values):
@@ -378,25 +441,10 @@ def remap_values(values):
         #console.log(round(unrounded))
     return remapped_values
 
-# add back every removed voxel
-def rebuild_voxel(): 
-    if hide_voxels == False:
-        if wireframe_base == True:
-            for wireframe in wireframe_list:
-                scene.remove(wireframe)
-            for wireframe  in wireframe_list:
-                scene.add(wireframe) 
-        else:
-            for voxel in voxel_list:
-                scene.remove(voxel)
-            for voxel in voxel_list:
-                scene.add(voxel)   
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------  
 # LOADER
 # generate geometry
 def generate_geometry():
-    global infill_type, infill_positions, loaded_objects
-
     for objects in loaded_objects:
         tiles = scene.getObjectByName("tile")
         scene.remove(tiles)
@@ -482,15 +530,18 @@ document.body.appendChild(link)
 def export(event):
     global geom_exporter, exporter, scene
     geom_exporter = THREE.GLTFExporter.new()
-    geom_exporter.parse(scene, create_proxy(download))
+    jsscene = to_js(scene)
+    geom_exporter.parse(jsscene, create_proxy(download))
     pass 
 
 def download(result):
     #console.log(result)
-    saveArrayBuffer(result, "VeomScene.gltf")
+    jsresult = to_js(result)
+    saveArrayBuffer(jsresult, "VeomScene.gltf")
 
 def saveArrayBuffer(buffer, fileName):
-    save(Blob.new([buffer]), fileName)
+    jsbuffer = to_js(buffer)
+    save(Blob.new([jsbuffer]), fileName)
 
 def save(blob, fileName):
     link.href = URL.createObjectURL(blob)
@@ -501,48 +552,59 @@ def error():
     #console.log("gltf error !")
     pass
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-#-------------------------------------------------------------------------------------------------------------------------------------------------------------------  
 # UPDATE
 def update():
-    global attractor_limit, attractor_strengths, firstupdate, updater, delay, exporter, filling, strengths_update
+    global grid_scale_x, grid_scale_y, grid_scale_z, attractor_limit, attractor_strengths, firstupdate, updater, delay, exporter, filling, strengths_update, param5
     # if grid changes
     if wireframe_base != grid_params.wireframe or hide_voxels != grid_params.hide_voxels:
-        generate_voxel()
+        if filling == "No Infill":
+            grid_params.hide_voxels = False
+            param5.updateDisplay()
+        generate_grid()
         final_values()  
         changelog()  
     # if attractor limit changes
     elif attractor_limit != attractor_params.limit:
         strengths_update = 0
         attractor_limit = attractor_params.limit 
-        rebuild_voxel()
         final_values()
         changelog()
-        generate_geometry()
+        if filling != "No Infill":
+            generate_geometry()
     # if attractor strengths change
     elif strengths_update == 1:
         strengths_update = 0
-        rebuild_voxel()
         final_values()
-        generate_geometry() 
+        if filling != "No Infill":
+            generate_geometry() 
     # if gridscale changes
     elif grid_scale_x != grid_params.grid_scale_x or grid_scale_y != grid_params.grid_scale_y or grid_scale_z != grid_params.grid_scale_z:
-        #position_attractors()
-        generate_voxel()
+        grid_scale_x = grid_params.grid_scale_x
+        grid_scale_y = grid_params.grid_scale_y
+        grid_scale_z = grid_params.grid_scale_z
+        generate_grid()
         final_values()
         changelog()
-        generate_geometry()
+        if filling != "No Infill":
+            generate_geometry()
     # if voxel fill changes
     elif filling != attractor_params.Geometry:
         filling = attractor_params.Geometry
-        generate_geometry()
+        if filling != "No Infill":
+            generate_geometry()
+        elif filling == "No Infill":
+            grid_params.hide_voxels = False
+            param5.updateDisplay()
+            for objects in loaded_objects:
+                tiles = scene.getObjectByName("tile")
+                scene.remove(tiles)          
     # bugfix: delay calculation of voxels
     # first update delay
     elif firstupdate <= 1:
         firstupdate += 1
         if firstupdate == 2:
             firstupdate += 1
-            generate_voxel()
+            generate_grid()
             final_values() 
             changelog()
             generate_geometry()
@@ -551,19 +613,20 @@ def update():
         updater += 1
         if updater == 2:
             updater += 1
-            generate_voxel()
+            generate_grid()
             final_values() 
-            generate_geometry()
+            if filling != "No Infill":
+                generate_geometry()
     # new attractor delay
     elif delay <= 1:
         delay += 1
         if delay == 2:
             delay += 1 
-            rebuild_voxel()
             final_values() 
             changelog()
-            generate_geometry()
-
+            if filling != "No Infill":
+                generate_geometry()
+                
 # reset scene
 def reset(event):
     camera.position.x = -45
@@ -634,8 +697,8 @@ def undo(event):
         grid_scale_z = history[i][3]
         grid_params.grid_scale_z = history[i][3]
 
-        wireframe_base = history[i][4]
-        grid_params.wireframe = history[i][4]
+        #wireframe_base = history[i][4]
+        #grid_params.wireframe = history[i][4]
 
         hide_voxels = history[i][5]
         grid_params.hide_voxels = history[i][5]
@@ -687,8 +750,8 @@ def redo(event):
         grid_scale_z = future[i][3]
         grid_params.grid_scale_z = future[i][3]
 
-        wireframe_base = future[i][4]
-        grid_params.wireframe = future[i][4]
+        #wireframe_base = future[i][4]
+        #grid_params.wireframe = future[i][4]
 
         hide_voxels = future[i][5]
         grid_params.hide_voxels = future[i][5]
@@ -729,7 +792,6 @@ def changelog():
 
     history.append(changes)
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------  
-
 # ATTRACTORS
 # add_attractor
 def Add_attractor(event):
@@ -794,10 +856,10 @@ def LessStrength(event):
             
                 ValueStr.append(attractor_strength2)
 
-                attractor_strengths[id] = ValueStr[-1]     
+                attractor_strengths[id] = ValueStr[-1]   
+                #print(attractor_strengths)     
                 strengths_update = 1  
-                #print(attractor_strengths)            
-              
+                              
 def MoreStrength(event):  
     global str, attractor_strengths, strengths_update 
     keyName = event.key
@@ -814,9 +876,9 @@ def MoreStrength(event):
             ValueStr.append(attractor_strength2)
 
             attractor_strengths[id] = ValueStr[-1]     
+            #print(attractor_strengths)           
             strengths_update = 1  
-            #print(attractor_strengths)                       
-
+                   
 def Sphereactivation(event):
     if attractor_params.set_strength == True:
         event.preventDefault()
@@ -875,13 +937,13 @@ def deactivate_o_controls(event):
     controls.enabled = False
 
 def activate_o_controls(event):
-    global controls
+    global controls, infi
     controls.enabled = True
     
-    rebuild_voxel()
     final_values()
     changelog()
-    generate_geometry()
+    if filling != "No Infill":
+        generate_geometry()
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------  
 # RENDER
 # simple render and animate
