@@ -24,8 +24,11 @@ canvas {
     top: 0;
 }
 
-.py-terminal-hidden {
-    display: none;
+.py-terminal {
+    display: block;
+    position: fixed;
+    z-index: 1;
+    left: 50px
 }
 
 .bar {
@@ -106,7 +109,7 @@ canvas {
     right: 0;
     bottom: 100px;
 
-    padding:40px 16px;
+    padding:20px 16px;
     margin-top:16px;
     margin-bottom:16px;
     margin-right:16px;
@@ -114,6 +117,33 @@ canvas {
     min-height: 1em;
     max-width: 70%;
     background-color: rgba(255, 255, 255, 0.652);
+
+    color: rgb(135, 170, 174);
+    box-shadow: 10px 10px 30px var(--box-shadow);
+
+    border-radius: var(--inner-border-radius);
+    display: block;
+}
+
+.text2 {
+    font-family: 'Verdana';
+    font-size: 13px;
+    font-weight: lighter;
+    
+    position: relative;
+    top: 120px;
+    left: 14%;
+    right: 0;
+    bottom: 100px;
+
+    padding:25px 16px;
+    margin-top:16px;
+    margin-bottom:16px;
+    margin-right:16px;
+
+    min-height: 1em;
+    max-width: 70%;
+    background-color: rgba(255, 255, 255);
 
     color: rgb(135, 170, 174);
     box-shadow: 10px 10px 30px var(--box-shadow);
@@ -147,8 +177,6 @@ canvas {
  
 }
 
-
-
 .text:hover{
     color: var(--prime-hover-textbox)
 
@@ -165,6 +193,27 @@ canvas {
     margin-right:16px;
 }
 
+.containerimg {
+    position: relative;
+    top: 120px;
+    left: 15%;
+    right: 20px;
+    float: both;
+    margin-left: 0px;
+    margin-top: 0px;    
+}
+.container2 {
+    position: fixed;
+    top: 120px;
+    left: 15%;
+    right: 20px;
+    float: both;
+    margin-left: 0px;
+    margin-top: 0px;    
+
+
+}
+
 .footer {
     position: fixed;
     z-index: 1;
@@ -178,7 +227,8 @@ canvas {
 }
 
 .fav_img {
-    display: none
+    display: none;
+    z-index: 1;
 }
 @media (max-width: 850px){
     .fav_img {
@@ -486,3 +536,18 @@ button{
 .info:hover {
     background-color: var(--prime-hover);
 }
+
+.test {
+    font-family: 'Verdana';
+    font-size: 12px;
+
+    position: fixed;
+    z-index: 1;
+
+    left: 80px;
+    top: 72px
+
+
+}
+
+/*---Process------------------------------------------------*/
