@@ -44,7 +44,7 @@ canvas {
     font-size: 13px;
     font-weight: lighter;
 
-    padding:8px 16px;
+    padding:8px 20px;
     z-index: 1;
 
     outline:0;
@@ -53,7 +53,7 @@ canvas {
     
     top: 8px;
     left: 20px;
-    width: 45px;
+
 
     text-align:center;
     border:none;
@@ -62,6 +62,7 @@ canvas {
 
     text-decoration:none;
     color:inherit;
+    border-radius: var(--border-radius);
 }
 
 .buttonhead:hover {
@@ -69,8 +70,8 @@ canvas {
 }
 
 .buttonhead:active {
-    background-color: var(--prime-hover-text);
-    transition: 0.05s ease-out;
+    background-color: var(--primary-color);
+    transition: 0.5s ease-out;  
 }
 
 .buttonicon {
@@ -118,7 +119,7 @@ canvas {
     max-width: 70%;
     background-color: rgba(255, 255, 255, 0.652);
 
-    color: rgb(135, 170, 174);
+    color:gre;
     box-shadow: 10px 10px 30px var(--box-shadow);
 
     border-radius: var(--inner-border-radius);
@@ -217,12 +218,12 @@ canvas {
 .footer {
     position: fixed;
     z-index: 1;
-    bottom: 0px;
-    right: 27px;
-
-    color: var(--prime-hover2);
+    bottom: 9px;
+    left: 27px;
+    opacity: 50%;
+    color: var(--contrasting-color);
     font-family: 'Verdana';
-    font-size: 10px;
+    font-size: 12px;
     font-weight: lighter;
 }
 
@@ -348,12 +349,18 @@ div.close-button .close-bottom {
     border-radius: 0 0 var(--border-radius) var(--border-radius);
   }
 
+.dg .c select:hover {
+    cursor: pointer;
+}
+
 /*---
 REDO-BUTTON----------------------------------------------*/
 button{
     z-index: 1;
 }
-
+button:hover{
+    cursor: pointer ;
+}
 .button3 {
     height: 30px;
     width: 70px;
