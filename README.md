@@ -7,3 +7,5 @@ We wanted to create a designtool, which allows the user to easily generate a fre
 The generated structure adapts to attractor points and their strength and is easily downloadable (we are still facing problems with the downloaded gltf files).
 
 Please open the app and play around!
+
+https://huynhandre.github.io/veom/
