@@ -462,11 +462,20 @@ def generate_geometry():
     type_3_clean = ["./assets/models/Type3_clean/Variation1.glb","./assets/models/Type3_clean/Variation2.glb","./assets/models/Type3_clean/Variation3.glb"] 
 
     if filling == "Type 1":
-        choose_type = type_1
+        if hide_voxels == False:
+            choose_type = type_1
+        else:
+            choose_type = type1_clean
     elif filling == "Type 2":
-        choose_type = type_2
+        if hide_voxels == False:
+            choose_type = type_2
+        else:
+            choose_type = type2_clean
     elif filling == "Type 3":
-        choose_type = type_3
+        if hide_voxels == False:
+            choose_type = type_3
+        else:
+            choose_type = type3_clean
 
     for pos, val in zip(infill_positions, infill_type):
         if val == 1:
