@@ -183,7 +183,7 @@ def main():
     attractor_params = Object.fromEntries(to_js(attractor_params))
 
     filling_options = ["No Infill", "Type 1", "Type 2", "Type 3"]
-
+  
     global gui, param_folder, param1, param2, param3, param4, param5, param6
     gui = window.dat.GUI.new()
     param_folder = gui.addFolder('Bounding Parameters')
@@ -443,7 +443,7 @@ def generate_geometry():
         tiles = scene.getObjectByName("tile")
         scene.remove(tiles)
 
-    global infill_positions_1, infill_positions_2, infill_positions_3
+    global infill_positions_1, infill_positions_2, infill_positions_3, hide_voxels
     infill_positions_1 = []
     infill_positions_2 = []
     infill_positions_3 = []
@@ -452,7 +452,7 @@ def generate_geometry():
     counter_1 = 0
     counter_2 = 0
     counter_3 = 0
-
+    
     # location of filling types and their variations
     type_1 = ["./assets/models/Type1/Variation1.glb","./assets/models/Type1/Variation2.glb","./assets/models/Type1/Variation3.glb"]
     type_1_clean = ["./assets/models/Type1_clean/Variation1.glb","./assets/models/Type1_clean/Variation2.glb","./assets/models/Type1_clean/Variation3.glb"] 
