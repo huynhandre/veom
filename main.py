@@ -197,7 +197,7 @@ def main():
     param6 = param_folder.add(attractor_params, 'limit', 0, 1)
     param_folder.open()
     param_folder = gui.add(attractor_params, 'Geometry', to_js(filling_options))
-    param5 = gui.add(grid_params, 'hide_voxels').name("Clean view")
+    param_folder = gui.add(grid_params, 'hide_voxels').name("Clean view")
 
     # html buttonsklk
     button_proxy1 = create_proxy(export)
