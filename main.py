@@ -572,8 +572,7 @@ def update():
         if filling == "No Infill":
             grid_params.hide_voxels = False
             param5.updateDisplay()
-            gui.updateDisplay()
-            param_folder.updateDisplay()
+          
         generate_grid()
         final_values()  
         changelog()  
