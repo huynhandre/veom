@@ -191,12 +191,11 @@ def main():
     param2= param_folder.add(grid_params, 'grid_scale_y', 1,25,1).name("Scale Y")
     param3 = param_folder.add(grid_params, 'grid_scale_z', 1,25,1).name("Scale Z")
     #param4 = param_folder.add(grid_params, 'wireframe')
-    #param5 = param_folder.add(grid_params, 'hide_voxels').name("Clean view")
+    param5 = param_folder.add(grid_params, 'hide_voxels').name("Clean view")
 
     param_folder = gui.addFolder('Attractor')
     param6 = param_folder.add(attractor_params, 'limit', 0, 1)
     param_folder.open()
-    param5 = gui.add(grid_params, 'hide_voxels').name("Clean view")
     param_folder = gui.add(attractor_params, 'Geometry', to_js(filling_options))
 
     # html buttonsklk
