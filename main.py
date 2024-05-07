@@ -574,6 +574,7 @@ def update():
         generate_grid()
         final_values()  
         changelog()  
+        generate_geometry() 
     # if attractor limit changes
     elif attractor_limit != attractor_params.limit:
         strengths_update = 0
