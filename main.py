@@ -455,8 +455,11 @@ def generate_geometry():
 
     # location of filling types and their variations
     type_1 = ["./assets/models/Type1/Variation1.glb","./assets/models/Type1/Variation2.glb","./assets/models/Type1/Variation3.glb"]
+    type_1_clean = ["./assets/models/Type1_clean/Variation1.glb","./assets/models/Type1_clean/Variation2.glb","./assets/models/Type1_clean/Variation3.glb"] 
     type_2 = ["./assets/models/Type2/Variation1.glb","./assets/models/Type2/Variation2.glb","./assets/models/Type2/Variation3.glb"]
+    type_2_clean = ["./assets/models/Type2_clean/Variation1.glb","./assets/models/Type2_clean/Variation2.glb","./assets/models/Type2_clean/Variation3.glb"] 
     type_3 = ["./assets/models/Type3/Variation1.glb","./assets/models/Type3/Variation2.glb","./assets/models/Type3/Variation3.glb"]
+    type_3_clean = ["./assets/models/Type3_clean/Variation1.glb","./assets/models/Type3_clean/Variation2.glb","./assets/models/Type3_clean/Variation3.glb"] 
 
     if filling == "Type 1":
         choose_type = type_1
